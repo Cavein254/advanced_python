@@ -1,15 +1,17 @@
-from threading import Thread
+from threading import Thread, Lock
 import time
 
 
 class Singleton(type):
     _instances = {}
+    _lock = Lock()
 
     def __call__(self, *args, **kwargs):
-        if self not in self._instances:
-            instance = super().__call__(*args, **kwargs)
-            self._instances[self] = instance
-            time.sleep(1)
+        with self._lock:
+            if self not in self._instances:
+                instance = super().__call__(*args, **kwargs)
+                self._instances[self] = instance
+                time.sleep(1)
         return self._instances[self]
 
 
