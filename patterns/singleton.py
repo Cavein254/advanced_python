@@ -1,3 +1,7 @@
+from threading import Thread
+import time
+
+
 class Singleton(type):
     _instances = {}
 
@@ -5,6 +9,7 @@ class Singleton(type):
         if self not in self._instances:
             instance = super().__call__(*args, **kwargs)
             self._instances[self] = instance
+            time.sleep(1)
         return self._instances[self]
 
 
@@ -19,5 +24,11 @@ def create_singleton():
     return singleton
 
 if __name__=='__main__':
-    for i in range(10):
-        create_singleton()
+    #for i in range(10):
+        #create_singleton()
+    p1 = Thread(target=create_singleton)
+    p2 = Thread(target=create_singleton)
+    p1.start()
+    p2.start()
+
+
